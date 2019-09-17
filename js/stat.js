@@ -40,6 +40,19 @@ var renderCongrats = function (ctx) {
   ctx.fillText('Список результатов:', CLOUD_X + BAR_GAP, CLOUD_Y + 5 * GAP);
 };
 
+var renderChart = function (ctx, names, times) {
+  var maxTime = getMaxElement(times);
+
+  for (var i = 0; i < names.length; i++) {
+    ctx.fillStyle = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255, ' + Math.random() + ')';
+
+    ctx.fillRect(TEXT_X + (BAR_WIDTH + BAR_GAP) * i, BAR_Y, BAR_WIDTH, ((-BAR_MAX_HEIGHT * times[i]) / maxTime) + GAP);
+
+    ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+    ctx.fillText(Math.floor(times[i]), TEXT_X + (BAR_WIDTH + BAR_GAP) * i, ((-BAR_MAX_HEIGHT * times[i]) / maxTime) + STATS_GAP);
+    ctx.fillText(names[i], TEXT_X + (BAR_WIDTH + BAR_GAP) * i, TEXT_Y);
+  }
+};
 
 window.renderStatistics = function (ctx, names, times) {
   renderScoreCard(ctx);
@@ -47,19 +60,5 @@ window.renderStatistics = function (ctx, names, times) {
 
   renderCongrats(ctx);
 
-  var renderChart = function (ctx) {
-    var maxTime = getMaxElement(times);
-
-    for (var i = 0; i < names.length; i++) {
-      ctx.fillStyle = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 0, 255, ' + Math.random() + ')';
-
-      ctx.fillRect(TEXT_X + (BAR_WIDTH + BAR_GAP) * i, BAR_Y, BAR_WIDTH, ((-BAR_MAX_HEIGHT * times[i]) / maxTime) + GAP);
-
-      ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-      ctx.fillText(Math.floor(times[i]), TEXT_X + (BAR_WIDTH + BAR_GAP) * i, ((-BAR_MAX_HEIGHT * times[i]) / maxTime) + STATS_GAP);
-      ctx.fillText(names[i], TEXT_X + (BAR_WIDTH + BAR_GAP) * i, TEXT_Y);
-    }
-  };
-
-  renderChart(ctx);
+  renderChart(ctx, names, times);
 };
