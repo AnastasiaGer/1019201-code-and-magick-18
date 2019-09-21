@@ -5,20 +5,21 @@ var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var WIZARDS_COUNT = 4;
 
-var showUserDialog = function () {
-  var userDialogElement = document.querySelector('.setup');
-  userDialogElement.classList.remove('hidden');
-};
-
-var showSetupSimilar = function () {
-  var userSetupElement = document.querySelector('.setup-similar');
-  userSetupElement.classList.remove('hidden');
-};
+var userDialogElement = document.querySelector('.setup');
+var userSetupElement = document.querySelector('.setup-similar');
 
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
+
+var showUserDialog = function () {
+  userDialogElement.classList.remove('hidden');
+};
+
+var showSetupSimilar = function () {
+  userSetupElement.classList.remove('hidden');
+};
 
 var getRandomInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -62,12 +63,10 @@ var renderSimilarWizards = function (wizards) {
   similarListElement.appendChild(fragment);
 };
 
-renderSimilarWizards(getSimilarWizards(WIZARDS_COUNT));
-
 var init = function () {
   showUserDialog();
   showSetupSimilar();
-  var wizards = getSimilarWizards();
+  var wizards = getSimilarWizards(WIZARDS_COUNT);
   renderSimilarWizards(wizards);
 };
 
