@@ -6,6 +6,7 @@ var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var ENTER_KEYCODE = 13;
 var ESC_KEYCODE = 27;
+var MIN_USER_NAME = 2;
 var WIZARDS_COUNT = 4;
 
 var setup = document.querySelector('.setup');
@@ -87,6 +88,10 @@ var onSetupSubmitClick = function () {
   }
 };
 
+var hideSetupElement = function () {
+  userSetupElement.classList.remove('hidden');
+};
+
 // Валидация длины текста в поле Имени персонажа
 var onUserNameFieldInvalid = function () {
   if (userNameField.validity.tooShort) {
@@ -103,7 +108,7 @@ var onUserNameFieldInvalid = function () {
 // Валидация мин.длины текста в поле Имени персонажа для Edge
 var onUserNameFieldInput = function (evt) {
   var target = evt.target;
-  if (target.value.length < 2) {
+  if (target.value.length < MIN_USER_NAME) {
     target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
   } else {
     target.setCustomValidity('');
@@ -159,7 +164,7 @@ var renderSimilarWizards = function (wizards) {
 var init = function () {
   var wizards = getSimilarWizards(WIZARDS_COUNT);
   renderSimilarWizards(wizards);
-  userSetupElement.classList.remove('hidden');
+  hideSetupElement();
 };
 
 init();
