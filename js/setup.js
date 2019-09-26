@@ -9,13 +9,13 @@ var ESC_KEYCODE = 27;
 var MIN_USER_NAME = 2;
 var WIZARDS_COUNT = 4;
 
-var setup = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setupClose = document.querySelector('.setup-close');
+var setupElement = document.querySelector('.setup');
+var setupOpenElement = document.querySelector('.setup-open');
+var setupCloseElement = document.querySelector('.setup-close');
 
-var setupForm = setup.querySelector('.setup-wizard-form');
-var userNameField = setup.querySelector('.setup-user-name');
-var setupSubmit = setup.querySelector('.setup-submit');
+var setupFormElement = setupElement.querySelector('.setup-wizard-form');
+var userNameFieldElement = setupElement.querySelector('.setup-user-name');
+var setupSubmitElement = setupElement.querySelector('.setup-submit');
 
 
 var userSetupElement = document.querySelector('.setup-similar');
@@ -24,10 +24,10 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
 
-var setupPlayer = setup.querySelector('.setup-player');
-var setupWizardCoat = setupPlayer.querySelector('.wizard-coat');
-var setupWizardEyes = setupPlayer.querySelector('.wizard-eyes');
-var setupFireball = setupPlayer.querySelector('.setup-fireball');
+var setupPlayerElement = setupElement.querySelector('.setup-player');
+var setupWizardCoatElement = setupPlayerElement.querySelector('.wizard-coat');
+var setupWizardEyesElement = setupPlayerElement.querySelector('.wizard-eyes');
+var setupFireballElement = setupPlayerElement.querySelector('.setup-fireball');
 
 var getRandomInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -39,52 +39,52 @@ var getRandomArrayElement = function (arr) {
 
 // Открытие и закрытие popup
 var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE && evt.target !== userNameField) {
+  if (evt.keyCode === ESC_KEYCODE && evt.target !== userNameFieldElement) {
     closePopup();
   }
 };
 
 var openPopup = function () {
-  setup.classList.remove('hidden');
+  setupElement.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
-  userNameField.addEventListener('invalid', onUserNameFieldInvalid);
-  userNameField.addEventListener('input', onUserNameFieldInput);
-  setupPlayer.addEventListener('click', onSetupPlayerClick);
-  setupSubmit.addEventListener('click', onSetupSubmitClick);
+  userNameFieldElement.addEventListener('invalid', onUserNameFieldInvalid);
+  userNameFieldElement.addEventListener('input', onUserNameFieldInput);
+  setupPlayerElement.addEventListener('click', onSetupPlayerClick);
+  setupSubmitElement.addEventListener('click', onSetupSubmitClick);
 };
 
 var closePopup = function () {
-  setup.classList.add('hidden');
+  setupElement.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
-  userNameField.removeEventListener('invalid', onUserNameFieldInvalid);
-  userNameField.removeEventListener('input', onUserNameFieldInput);
-  setupPlayer.removeEventListener('click', onSetupPlayerClick);
-  setupSubmit.removeEventListener('click', onSetupSubmitClick);
+  userNameFieldElement.removeEventListener('invalid', onUserNameFieldInvalid);
+  userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
+  setupPlayerElement.removeEventListener('click', onSetupPlayerClick);
+  setupSubmitElement.removeEventListener('click', onSetupSubmitClick);
 };
 
-setupOpen.addEventListener('click', function () {
+setupOpenElement.addEventListener('click', function () {
   openPopup();
 });
 
-setupOpen.addEventListener('keydown', function (evt) {
+setupOpenElement.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     openPopup();
   }
 });
 
-setupClose.addEventListener('click', function () {
+setupCloseElement.addEventListener('click', function () {
   closePopup();
 });
 
-setupClose.addEventListener('keydown', function (evt) {
+setupCloseElement.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
 });
 
 var onSetupSubmitClick = function () {
-  if (userNameField.checkValidity()) {
-    setupForm.submit();
+  if (userNameFieldElement.checkValidity()) {
+    setupFormElement.submit();
   }
 };
 
@@ -94,14 +94,14 @@ var hideSetupElement = function () {
 
 // Валидация длины текста в поле Имени персонажа
 var onUserNameFieldInvalid = function () {
-  if (userNameField.validity.tooShort) {
-    userNameField.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-  } else if (userNameField.validity.tooLong) {
-    userNameField.setCustomValidity('Имя не должно превышать 25-ти символов');
-  } else if (userNameField.validity.valueMissing) {
-    userNameField.setCustomValidity('Обязательное поле');
+  if (userNameFieldElement.validity.tooShort) {
+    userNameFieldElement.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (userNameFieldElement.validity.tooLong) {
+    userNameFieldElement.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (userNameFieldElement.validity.valueMissing) {
+    userNameFieldElement.setCustomValidity('Обязательное поле');
   } else {
-    userNameField.setCustomValidity('');
+    userNameFieldElement.setCustomValidity('');
   }
 };
 
@@ -118,11 +118,11 @@ var onUserNameFieldInput = function (evt) {
 // присвоение цветов при клике на элементы персонажа
 var onSetupPlayerClick = function (evt) {
   var targetElement = evt.target;
-  if (targetElement === setupWizardCoat) {
+  if (targetElement === setupWizardCoatElement) {
     targetElement.style.fill = getRandomArrayElement(COAT_COLORS);
-  } else if (targetElement === setupWizardEyes) {
+  } else if (targetElement === setupWizardEyesElement) {
     targetElement.style.fill = getRandomArrayElement(EYES_COLORS);
-  } else if (targetElement === setupFireball) {
+  } else if (targetElement === setupFireballElement) {
     targetElement.parentNode.style.background = getRandomArrayElement(FIREBALL_COLORS);
   }
 };
