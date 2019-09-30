@@ -12,7 +12,7 @@ var WIZARDS_COUNT = 4;
 var setupElement = document.querySelector('.setup');
 var setupOpenElement = document.querySelector('.setup-open');
 var setupCloseElement = document.querySelector('.setup-close');
-
+var setupUploadElement = setupElement.querySelector('.upload');
 var setupFormElement = setupElement.querySelector('.setup-wizard-form');
 var userNameFieldElement = setupElement.querySelector('.setup-user-name');
 var setupSubmitElement = setupElement.querySelector('.setup-submit');
@@ -44,9 +44,55 @@ var onPopupEscPress = function (evt) {
   }
 };
 
+// Перетаскивание окна настроек
+var onSetupUploadMousedown = function (evt) {
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var dragged = false;
+
+  var onMouseMove = function (moveEvt) {
+    dragged = true;
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    setupElement.style.top = (setupElement.offsetTop - shift.y) + 'px';
+    setupElement.style.left = (setupElement.offsetLeft - shift.x) + 'px';
+  };
+
+  var onMouseUp = function () {
+
+    if (dragged) {
+      var onSetupUploadClick = function (clickEvt) {
+        clickEvt.preventDefault();
+        setupUploadElement.removeEventListener('click', onSetupUploadClick);
+      };
+      setupUploadElement.addEventListener('click', onSetupUploadClick);
+    }
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+};
+
 var openPopup = function () {
   setupElement.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
+  setupUploadElement.addEventListener('mousedown', onSetupUploadMousedown);
   userNameFieldElement.addEventListener('invalid', onUserNameFieldInvalid);
   userNameFieldElement.addEventListener('input', onUserNameFieldInput);
   setupPlayerElement.addEventListener('click', onSetupPlayerClick);
@@ -56,6 +102,7 @@ var openPopup = function () {
 var closePopup = function () {
   setupElement.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
+  setupUploadElement.addEventListener('mousedown', onSetupUploadMousedown);
   userNameFieldElement.removeEventListener('invalid', onUserNameFieldInvalid);
   userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
   setupPlayerElement.removeEventListener('click', onSetupPlayerClick);
