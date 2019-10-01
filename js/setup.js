@@ -8,6 +8,8 @@ var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var MIN_USER_NAME = 2;
 var WIZARDS_COUNT = 4;
 
+var HIDDEN_CLASS = 'hidden';
+
 var setupElement = document.querySelector('.setup');
 var setupOpenElement = document.querySelector('.setup-open');
 var setupCloseElement = document.querySelector('.setup-close');
@@ -44,7 +46,7 @@ var onPopupEscPress = function (evt) {
 };
 
 var openPopup = function () {
-  setupElement.classList.remove('hidden');
+  setupElement.classList.remove(HIDDEN_CLASS);
   document.addEventListener('keydown', onPopupEscPress);
   userNameFieldElement.addEventListener('invalid', onUserNameFieldInvalid);
   userNameFieldElement.addEventListener('input', onUserNameFieldInput);
@@ -53,7 +55,7 @@ var openPopup = function () {
 };
 
 var closePopup = function () {
-  setupElement.classList.add('hidden');
+  setupElement.classList.add(HIDDEN_CLASS);
   document.removeEventListener('keydown', onPopupEscPress);
   userNameFieldElement.removeEventListener('invalid', onUserNameFieldInvalid);
   userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
@@ -88,7 +90,7 @@ var onSetupSubmitClick = function () {
 };
 
 var hideSetupElement = function () {
-  userSetupElement.classList.remove('hidden');
+  userSetupElement.classList.remove(HIDDEN_CLASS);
 };
 
 // Валидация длины текста в поле Имени персонажа
