@@ -48,6 +48,7 @@ var onPopupEscPress = function (evt) {
 var openPopup = function () {
   setupElement.classList.remove(HIDDEN_CLASS);
   document.addEventListener('keydown', onPopupEscPress);
+  dialogHandlerElement.addEventListener('mousedown', dialogHandlerElement);
   userNameFieldElement.addEventListener('invalid', onUserNameFieldInvalid);
   userNameFieldElement.addEventListener('input', onUserNameFieldInput);
   setupPlayerElement.addEventListener('click', onSetupPlayerClick);
@@ -56,7 +57,10 @@ var openPopup = function () {
 
 var closePopup = function () {
   setupElement.classList.add(HIDDEN_CLASS);
+  setupElement.style.top = null;
+  setupElement.style.left = null;
   document.removeEventListener('keydown', onPopupEscPress);
+  dialogHandlerElement.addEventListener('mousedown', dialogHandlerElement);
   userNameFieldElement.removeEventListener('invalid', onUserNameFieldInvalid);
   userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
   setupPlayerElement.removeEventListener('click', onSetupPlayerClick);
