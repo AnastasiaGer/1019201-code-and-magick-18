@@ -25,6 +25,10 @@
     }
   };
 
+  var resetFormElement = function () {
+    setupFormElement.reset();
+  };
+
   var openPopup = function () {
     setupElement.classList.remove(HIDDEN_CLASS);
     document.addEventListener('keydown', onPopupEscPress);
@@ -59,11 +63,13 @@
 
   setupCloseElement.addEventListener('click', function () {
     closePopup();
+    resetFormElement();
   });
 
   setupCloseElement.addEventListener('keydown', function (evt) {
     if (evt.keyCode === window.util.ENTER_KEYCODE) {
       closePopup();
+      resetFormElement();
     }
   });
 
