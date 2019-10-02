@@ -4,21 +4,11 @@ var SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Валь
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-var ENTER_KEYCODE = 13;
-var ESC_KEYCODE = 27;
-var MIN_USER_NAME = 2;
+
 var WIZARDS_COUNT = 4;
 
 var setupElement = document.querySelector('.setup');
-var setupOpenElement = document.querySelector('.setup-open');
-var setupCloseElement = document.querySelector('.setup-close');
 
-var setupFormElement = setupElement.querySelector('.setup-wizard-form');
-var userNameFieldElement = setupElement.querySelector('.setup-user-name');
-var setupSubmitElement = setupElement.querySelector('.setup-submit');
-
-
-var userSetupElement = document.querySelector('.setup-similar');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
@@ -35,84 +25,6 @@ var getRandomInteger = function (min, max) {
 
 var getRandomArrayElement = function (arr) {
   return arr[getRandomInteger(0, arr.length - 1)];
-};
-
-// Открытие и закрытие popup
-var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE && evt.target !== userNameFieldElement) {
-    closePopup();
-  }
-};
-
-var openPopup = function () {
-  setupElement.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
-  userNameFieldElement.addEventListener('invalid', onUserNameFieldInvalid);
-  userNameFieldElement.addEventListener('input', onUserNameFieldInput);
-  setupPlayerElement.addEventListener('click', onSetupPlayerClick);
-  setupSubmitElement.addEventListener('click', onSetupSubmitClick);
-};
-
-var closePopup = function () {
-  setupElement.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
-  userNameFieldElement.removeEventListener('invalid', onUserNameFieldInvalid);
-  userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
-  setupPlayerElement.removeEventListener('click', onSetupPlayerClick);
-  setupSubmitElement.removeEventListener('click', onSetupSubmitClick);
-};
-
-setupOpenElement.addEventListener('click', function () {
-  openPopup();
-});
-
-setupOpenElement.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    openPopup();
-  }
-});
-
-setupCloseElement.addEventListener('click', function () {
-  closePopup();
-});
-
-setupCloseElement.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    closePopup();
-  }
-});
-
-var onSetupSubmitClick = function () {
-  if (userNameFieldElement.checkValidity()) {
-    setupFormElement.submit();
-  }
-};
-
-var hideSetupElement = function () {
-  userSetupElement.classList.remove('hidden');
-};
-
-// Валидация длины текста в поле Имени персонажа
-var onUserNameFieldInvalid = function () {
-  if (userNameFieldElement.validity.tooShort) {
-    userNameFieldElement.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-  } else if (userNameFieldElement.validity.tooLong) {
-    userNameFieldElement.setCustomValidity('Имя не должно превышать 25-ти символов');
-  } else if (userNameFieldElement.validity.valueMissing) {
-    userNameFieldElement.setCustomValidity('Обязательное поле');
-  } else {
-    userNameFieldElement.setCustomValidity('');
-  }
-};
-
-// Валидация мин.длины текста в поле Имени персонажа для Edge
-var onUserNameFieldInput = function (evt) {
-  var target = evt.target;
-  if (target.value.length < MIN_USER_NAME) {
-    target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-  } else {
-    target.setCustomValidity('');
-  }
 };
 
 // присвоение цветов при клике на элементы персонажа
@@ -164,7 +76,8 @@ var renderSimilarWizards = function (wizards) {
 var init = function () {
   var wizards = getSimilarWizards(WIZARDS_COUNT);
   renderSimilarWizards(wizards);
-  hideSetupElement();
 };
 
 init();
+
+window.onSetupPlayerClick = onSetupPlayerClick;
