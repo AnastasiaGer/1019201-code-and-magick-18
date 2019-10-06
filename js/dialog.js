@@ -10,11 +10,12 @@
   var setupSubmitElement = setupElement.querySelector('.setup-submit');
 
   var setupPlayerElement = setupElement.querySelector('.setup-player');
-
-  var setupFormElement = setupElement.querySelector('.setup-wizard-form');
+  var setupWizardForm = setupElement.querySelector('.setup-wizard-form');
+  var setupWizardCoatElement = setupPlayerElement.querySelector('.wizard-coat');
+  var setupWizardEyesElement = setupPlayerElement.querySelector('.wizard-eyes');
+  var setupFireballElement = setupPlayerElement.querySelector('.setup-fireball');
 
   var userSetupElement = document.querySelector('.setup-similar');
-
 
   var HIDDEN_CLASS = 'hidden';
 
@@ -26,7 +27,7 @@
   };
 
   var resetFormElement = function () {
-    setupFormElement.reset();
+    setupWizardForm.reset();
   };
 
   var openPopup = function () {
@@ -37,6 +38,9 @@
     userNameFieldElement.addEventListener('input', onUserNameFieldInput);
     setupPlayerElement.addEventListener('click', window.onSetupPlayerClick);
     setupSubmitElement.addEventListener('click', onSetupSubmitClick);
+    setupWizardEyesElement.addEventListener('click', window.setup.onWizardEyesClick);
+    setupFireballElement.addEventListener('click', window.setup.onFireballClick);
+    setupWizardCoatElement.addEventListener('click', window.setup.onWizardCoatClick);
   };
 
   var closePopup = function () {
@@ -49,6 +53,9 @@
     userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
     setupPlayerElement.removeEventListener('click', window.onSetupPlayerClick);
     setupSubmitElement.removeEventListener('click', onSetupSubmitClick);
+    setupWizardEyesElement.removeEventListener('click', window.setup.onWizardEyesClick);
+    setupFireballElement.removeEventListener('click', window.setup.onFireballClick);
+    setupWizardCoatElement.removeEventListener('click', window.setup.onWizardCoatClick);
   };
 
   setupOpenElement.addEventListener('click', function () {
@@ -75,7 +82,7 @@
 
   var onSetupSubmitClick = function () {
     if (userNameFieldElement.checkValidity()) {
-      setupFormElement.submit();
+      setupWizardForm.submit();
     }
   };
 
@@ -156,4 +163,5 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
 })();
