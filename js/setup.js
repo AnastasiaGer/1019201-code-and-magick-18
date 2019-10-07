@@ -62,31 +62,11 @@ var onLoad = function (wizards) {
   document.querySelector('.setup-similar').classList.remove('hidden');
 };
 
-var onRequestError = function (errorMessage) {
-  var node = document.createElement('div');
-  node.classList.add('error-node');
-  node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
-  node.style.position = 'absolute';
-  node.style.left = 0;
-  node.style.right = 0;
-  node.style.fontSize = '30px';
-
-  node.textContent = errorMessage;
-  document.body.insertAdjacentElement('afterbegin', node);
-  node.addEventListener('submit', removeOnRequestError);
-};
-
-var removeOnRequestError = function (evt) {
-  document.body.removeChild(evt.target);
-  evt.target.removeEventListener('submit', removeOnRequestError);
-};
-
-window.backend.load(onLoad, onRequestError, LOAD_URL);
+window.backend.load(onLoad, window.backend.onRequestError, LOAD_URL);
 
 window.setup = {
   onWizardEyesClick: onWizardEyesClick,
   onFireballClick: onFireballClick,
   onWizardCoatClick: onWizardCoatClick,
-  setupWizardForm: setupWizardForm,
-  onRequestError: onRequestError
+  setupWizardForm: setupWizardForm
 };

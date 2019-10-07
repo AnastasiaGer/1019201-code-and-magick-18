@@ -82,7 +82,7 @@
 
   window.setup.setupWizardForm.addEventListener('submit', function (evt) {
     if (userNameFieldElement.checkValidity()) {
-      window.backend.save(new FormData(window.setup.setupWizardForm), onSuccess, window.setup.onRequestError, SAVE_URL);
+      window.backend.save(new FormData(window.setup.setupWizardForm), onSuccess, window.backend.onRequestError, SAVE_URL);
       evt.preventDefault();
     }
   });
