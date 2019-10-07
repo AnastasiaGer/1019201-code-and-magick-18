@@ -1,5 +1,9 @@
 'use strict';
 (function () {
+  var HIDDEN_CLASS = 'hidden';
+
+  var SAVE_URL = 'https://js.dump.academy/code-and-magick';
+
   var MIN_USER_NAME = 2;
   var setupElement = document.querySelector('.setup');
   var setupOpenElement = document.querySelector('.setup-open');
@@ -7,16 +11,12 @@
   var dialogHandlerElement = setupElement.querySelector('.upload');
 
   var userNameFieldElement = setupElement.querySelector('.setup-user-name');
-  var setupSubmitElement = setupElement.querySelector('.setup-submit');
 
   var setupPlayerElement = setupElement.querySelector('.setup-player');
+  var setupWizardCoatElement = setupPlayerElement.querySelector('.wizard-coat');
+  var setupWizardEyesElement = setupPlayerElement.querySelector('.wizard-eyes');
+  var setupFireballElement = setupPlayerElement.querySelector('.setup-fireball');
 
-  var setupFormElement = setupElement.querySelector('.setup-wizard-form');
-
-  var userSetupElement = document.querySelector('.setup-similar');
-
-
-  var HIDDEN_CLASS = 'hidden';
 
   // Открытие и закрытие popup
   var onPopupEscPress = function (evt) {
@@ -26,7 +26,7 @@
   };
 
   var resetFormElement = function () {
-    setupFormElement.reset();
+    window.setup.setupWizardForm.reset();
   };
 
   var openPopup = function () {
@@ -35,8 +35,9 @@
     dialogHandlerElement.addEventListener('mousedown', dialogHandlerElement);
     userNameFieldElement.addEventListener('invalid', onUserNameFieldInvalid);
     userNameFieldElement.addEventListener('input', onUserNameFieldInput);
-    setupPlayerElement.addEventListener('click', window.onSetupPlayerClick);
-    setupSubmitElement.addEventListener('click', onSetupSubmitClick);
+    setupWizardEyesElement.addEventListener('click', window.setup.onWizardEyesClick);
+    setupFireballElement.addEventListener('click', window.setup.onFireballClick);
+    setupWizardCoatElement.addEventListener('click', window.setup.onWizardCoatClick);
   };
 
   var closePopup = function () {
@@ -47,8 +48,9 @@
     dialogHandlerElement.addEventListener('mousedown', dialogHandlerElement);
     userNameFieldElement.removeEventListener('invalid', onUserNameFieldInvalid);
     userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
-    setupPlayerElement.removeEventListener('click', window.onSetupPlayerClick);
-    setupSubmitElement.removeEventListener('click', onSetupSubmitClick);
+    setupWizardEyesElement.removeEventListener('click', window.setup.onWizardEyesClick);
+    setupFireballElement.removeEventListener('click', window.setup.onFireballClick);
+    setupWizardCoatElement.removeEventListener('click', window.setup.onWizardCoatClick);
   };
 
   setupOpenElement.addEventListener('click', function () {
@@ -73,17 +75,17 @@
     }
   });
 
-  var onSetupSubmitClick = function () {
+  var onSuccess = function () {
+    setupElement.classList.add(HIDDEN_CLASS);
+    closePopup();
+  };
+
+  window.setup.setupWizardForm.addEventListener('submit', function (evt) {
     if (userNameFieldElement.checkValidity()) {
-      setupFormElement.submit();
+      window.backend.save(new FormData(window.setup.setupWizardForm), onSuccess, window.backend.onRequestError, SAVE_URL);
+      evt.preventDefault();
     }
-  };
-
-  var hideSetupElement = function () {
-    userSetupElement.classList.remove(HIDDEN_CLASS);
-  };
-
-  hideSetupElement();
+  });
 
   // Валидация длины текста в поле Имени персонажа
   var onUserNameFieldInvalid = function () {
@@ -156,4 +158,5 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
 })();
