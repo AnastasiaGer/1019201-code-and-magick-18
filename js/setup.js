@@ -6,6 +6,8 @@ var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
 var WIZARDS_COUNT = 4;
 
+var LOAD_URL = 'https://js.dump.academy/code-and-magick/data';
+
 var setupElement = document.querySelector('.setup');
 
 var similarListElement = document.querySelector('.setup-similar-list');
@@ -35,13 +37,32 @@ var renderSimilarWizards = function (wizards) {
   return fragment;
 };
 
-var successHandler = function (wizards) {
+// Изменение цвета глаз при клике
+var onWizardEyesClick = function () {
+  var eyesColor = window.util.getRandomItemFromArray(EYES_COLORS);
+  setupWizardEyesElement.style.fill = eyesColor;
+  setupWizardForm.querySelector('input[name=eyes-color]').value = eyesColor;
+};
+// Изменение цвета fireball при клике
+var onFireballClick = function () {
+  var fireballColor = window.util.getRandomItemFromArray(FIREBALL_COLORS);
+  setupFireballElement.style.backgroundColor = fireballColor;
+  setupFireballElement.querySelector('input').value = fireballColor;
+};
+// Изменение цвета плаща при клике
+var onWizardCoatClick = function () {
+  var coatColor = window.util.getRandomItemFromArray(COAT_COLORS);
+  setupWizardCoatElement.style.fill = coatColor;
+  setupWizardForm.querySelector('input[name=coat-color]').value = coatColor;
+};
+
+var onLoad = function (wizards) {
   var wizardsArray = window.util.getItemsFromArray(wizards, WIZARDS_COUNT);
   similarListElement.append(renderSimilarWizards(wizardsArray));
   document.querySelector('.setup-similar').classList.remove('hidden');
 };
 
-var errorHandler = function (errorMessage) {
+var onRequestError = function (errorMessage) {
   var node = document.createElement('div');
   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
   node.style.position = 'absolute';
@@ -53,26 +74,12 @@ var errorHandler = function (errorMessage) {
   document.body.insertAdjacentElement('afterbegin', node);
 };
 
+window.backend.load(onLoad, onRequestError, LOAD_URL);
+
 window.setup = {
-  // Изменение цвета глаз при клике
-  onWizardEyesClick: function () {
-    var eyesColor = window.util.getRandomItemFromArray(EYES_COLORS);
-    setupWizardEyesElement.style.fill = eyesColor;
-    setupWizardForm.querySelector('input[name=eyes-color]').value = eyesColor;
-  },
-  // Изменение цвета fireball при клике
-  onFireballClick: function () {
-    var fireballColor = window.util.getRandomItemFromArray(FIREBALL_COLORS);
-    setupFireballElement.style.backgroundColor = fireballColor;
-    setupFireballElement.querySelector('input').value = fireballColor;
-  },
-  // Изменение цвета плаща при клике
-  onWizardCoatClick: function () {
-    var coatColor = window.util.getRandomItemFromArray(COAT_COLORS);
-    setupWizardCoatElement.style.fill = coatColor;
-    setupWizardForm.querySelector('input[name=coat-color]').value = coatColor;
-  }
+  onWizardEyesClick: onWizardEyesClick,
+  onFireballClick: onFireballClick,
+  onWizardCoatClick: onWizardCoatClick,
+  setupWizardForm: setupWizardForm,
+  onRequestError: onRequestError
 };
-
-window.load(successHandler, errorHandler);
-
