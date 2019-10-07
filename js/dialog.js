@@ -1,5 +1,9 @@
 'use strict';
 (function () {
+  var HIDDEN_CLASS = 'hidden';
+
+  var SAVE_URL = 'https://js.dump.academy/code-and-magick';
+
   var MIN_USER_NAME = 2;
   var setupElement = document.querySelector('.setup');
   var setupOpenElement = document.querySelector('.setup-open');
@@ -13,9 +17,6 @@
   var setupWizardEyesElement = setupPlayerElement.querySelector('.wizard-eyes');
   var setupFireballElement = setupPlayerElement.querySelector('.setup-fireball');
 
-  var HIDDEN_CLASS = 'hidden';
-
-  var SAVE_URL = 'https://js.dump.academy/code-and-magick';
 
   // Открытие и закрытие popup
   var onPopupEscPress = function (evt) {
@@ -75,7 +76,7 @@
   });
 
   var onSuccess = function () {
-    setupElement.classList.add('hidden');
+    setupElement.classList.add(HIDDEN_CLASS);
     closePopup();
   };
 

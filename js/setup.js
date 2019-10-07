@@ -64,6 +64,7 @@ var onLoad = function (wizards) {
 
 var onRequestError = function (errorMessage) {
   var node = document.createElement('div');
+  node.classList.add('error-node');
   node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
   node.style.position = 'absolute';
   node.style.left = 0;
@@ -72,6 +73,12 @@ var onRequestError = function (errorMessage) {
 
   node.textContent = errorMessage;
   document.body.insertAdjacentElement('afterbegin', node);
+  node.addEventListener('submit', removeOnRequestError);
+};
+
+var removeOnRequestError = function (evt) {
+  document.body.removeChild(evt.target);
+  evt.target.removeEventListener('submit', removeOnRequestError);
 };
 
 window.backend.load(onLoad, onRequestError, LOAD_URL);
