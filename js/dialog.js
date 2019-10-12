@@ -11,12 +11,7 @@
   var dialogHandlerElement = setupElement.querySelector('.upload');
 
   var userNameFieldElement = setupElement.querySelector('.setup-user-name');
-
-  var setupPlayerElement = setupElement.querySelector('.setup-player');
-  var setupWizardCoatElement = setupPlayerElement.querySelector('.wizard-coat');
-  var setupWizardEyesElement = setupPlayerElement.querySelector('.wizard-eyes');
-  var setupFireballElement = setupPlayerElement.querySelector('.setup-fireball');
-
+  var setupWizardForm = setupElement.querySelector('.setup-wizard-form');
 
   // Открытие и закрытие popup
   var onPopupEscPress = function (evt) {
@@ -26,7 +21,7 @@
   };
 
   var resetFormElement = function () {
-    window.setup.setupWizardForm.reset();
+    setupWizardForm.reset();
   };
 
   var openPopup = function () {
@@ -35,9 +30,6 @@
     dialogHandlerElement.addEventListener('mousedown', dialogHandlerElement);
     userNameFieldElement.addEventListener('invalid', onUserNameFieldInvalid);
     userNameFieldElement.addEventListener('input', onUserNameFieldInput);
-    setupWizardEyesElement.addEventListener('click', window.setup.onWizardEyesClick);
-    setupFireballElement.addEventListener('click', window.setup.onFireballClick);
-    setupWizardCoatElement.addEventListener('click', window.setup.onWizardCoatClick);
   };
 
   var closePopup = function () {
@@ -48,9 +40,6 @@
     dialogHandlerElement.addEventListener('mousedown', dialogHandlerElement);
     userNameFieldElement.removeEventListener('invalid', onUserNameFieldInvalid);
     userNameFieldElement.removeEventListener('input', onUserNameFieldInput);
-    setupWizardEyesElement.removeEventListener('click', window.setup.onWizardEyesClick);
-    setupFireballElement.removeEventListener('click', window.setup.onFireballClick);
-    setupWizardCoatElement.removeEventListener('click', window.setup.onWizardCoatClick);
   };
 
   setupOpenElement.addEventListener('click', function () {
@@ -80,9 +69,9 @@
     closePopup();
   };
 
-  window.setup.setupWizardForm.addEventListener('submit', function (evt) {
+  setupWizardForm.addEventListener('submit', function (evt) {
     if (userNameFieldElement.checkValidity()) {
-      window.backend.save(new FormData(window.setup.setupWizardForm), onSuccess, window.backend.onRequestError, SAVE_URL);
+      window.backend.save(new FormData(setupWizardForm), onSuccess, window.backend.onRequestError, SAVE_URL);
       evt.preventDefault();
     }
   });
