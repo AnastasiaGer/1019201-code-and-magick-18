@@ -11,7 +11,7 @@
   var dialogHandlerElement = setupElement.querySelector('.upload');
 
   var userNameFieldElement = setupElement.querySelector('.setup-user-name');
-  var setupWizardForm = setupElement.querySelector('.setup-wizard-form');
+  var setupWizardFormElement = setupElement.querySelector('.setup-wizard-form');
 
   // Открытие и закрытие popup
   var onPopupEscPress = function (evt) {
@@ -21,7 +21,7 @@
   };
 
   var resetFormElement = function () {
-    setupWizardForm.reset();
+    setupWizardFormElement.reset();
   };
 
   var openPopup = function () {
@@ -69,9 +69,9 @@
     closePopup();
   };
 
-  setupWizardForm.addEventListener('submit', function (evt) {
+  setupWizardFormElement.addEventListener('submit', function (evt) {
     if (userNameFieldElement.checkValidity()) {
-      window.backend.save(new FormData(setupWizardForm), onSuccess, window.backend.onRequestError, SAVE_URL);
+      window.backend.save(new FormData(setupWizardFormElement), onSuccess, window.backend.onRequestError, SAVE_URL);
       evt.preventDefault();
     }
   });
