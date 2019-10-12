@@ -11,12 +11,12 @@
   var setupWizardEyesElement = setupPlayerElement.querySelector('.wizard-eyes');
   var setupFireballElement = setupPlayerElement.querySelector('.setup-fireball');
 
-  // Для того чтобы фильтровать данные, нам нужно после загрузки сохранить их, чтобы не пришлось загружать их каждый раз.
-  var wizards = [];
-
   // При смене цвета куртки или цвета глаз, надо запоминать текущий выбранный цвет.
   var coatColor;
   var eyesColor;
+
+  // Для того чтобы фильтровать данные, нам нужно после загрузки сохранить их, чтобы не пришлось загружать их каждый раз.
+  var wizards = [];
 
   // Для того чтобы понять, какой из магов весомее, нам надо внедрить систему «отличности» одного мага от другого getRank.
   var getRank = function (wizard) {
@@ -32,33 +32,6 @@
     return rank;
   };
 
-  var getRandomElement = function (array) {
-    var randomElementIndex = Math.floor(Math.random() * array.length);
-    return array[randomElementIndex];
-  };
-  // Изменение цвета плаща при клике
-  setupWizardCoatElement.addEventListener('click', function () {
-    var newColor = getRandomElement(COAT_COLORS);
-    setupWizardCoatElement.style.fill = newColor;
-    coatColor = newColor;
-    updateWizards();
-  });
-
-  // Изменение цвета глаз при клике
-  setupWizardEyesElement.addEventListener('click', function () {
-    var newColor = getRandomElement(EYES_COLORS);
-    setupWizardEyesElement.style.fill = newColor;
-    eyesColor = newColor;
-    updateWizards();
-  });
-
-  // Изменение цвета fireball при клике
-  setupFireballElement.addEventListener('click', function () {
-    var newColor = getRandomElement(FIREBALL_COLORS);
-    setupFireballElement.style.backgroundColor = newColor;
-  });
-
-  // При загрузке данных и смене цвета нам нужно фильтровать имеющиеся у нас данные. Для этого заведём отдельную функцию updateWizards, которую мы будем вызывать из всех мест, которые должны реагировать на изменения.
   var updateWizards = function () {
     window.renderSimilarWizards(wizards.slice().sort(function (left, right) {
       var rankDiff = getRank(right) - getRank(left);
@@ -68,6 +41,51 @@
       return rankDiff;
     }));
   };
+
+  var wizard = {
+    onEyesChange: function (color) {
+      return color;
+    },
+    onCoatChange: function (color) {
+      return color;
+    }
+  };
+
+  var getRandomElement = function (array) {
+    var randomElementIndex = Math.floor(Math.random() * array.length);
+    return array[randomElementIndex];
+  };
+  // Изменение цвета плаща при клике
+  setupWizardCoatElement.addEventListener('click', function () {
+    var newColor = getRandomElement(COAT_COLORS);
+    setupWizardCoatElement.style.fill = newColor;
+    wizard.onCoatChange(newColor);
+    updateWizards();
+  });
+
+  // Изменение цвета глаз при клике
+  setupWizardEyesElement.addEventListener('click', function () {
+    var newColor = getRandomElement(EYES_COLORS);
+    setupWizardEyesElement.style.fill = newColor;
+    wizard.onEyesChange(newColor);
+    updateWizards();
+  });
+
+  // Изменение цвета fireball при клике
+  setupFireballElement.addEventListener('click', function () {
+    var newColor = getRandomElement(FIREBALL_COLORS);
+    setupFireballElement.style.backgroundColor = newColor;
+  });
+
+  wizard.onEyesChange = window.debounce(function (color) {
+    eyesColor = color;
+    updateWizards();
+  });
+
+  wizard.onCoatChange = window.debounce(function (color) {
+    coatColor = color;
+    updateWizards();
+  });
 
   var onLoad = function (data) {
     wizards = data;
